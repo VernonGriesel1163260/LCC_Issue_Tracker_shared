@@ -1,0 +1,43 @@
+{% extends '_base.html' %}
+{% block title %}Resolved Issues{% endblock %}
+{% set active_page = 'issues' %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2>Resolved Issues</h2>
+    <a href="{{ url_for('issues_bp.list_issues') }}" class="btn btn-primary mb-3">Back to Issue List</a>
+    {% if issues %}
+      {% for issue in issues %}
+      <div class="card mb-3">
+        <div class="card-header" style="background-color: #585c33; color: #fff;">
+          <h5>{{ issue.summary }}</h5>
+          <small class="text-white">
+            Reported on {{ issue.created_at }} | Status: 
+            {% if session.get('role') in ['helper', 'admin'] %}
+              <form method="post" action="{{ url_for('issues_bp.update_issue_status', issue_id=issue.issue_id) }}" style="display: inline;">
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <select name="status" class="form-select form-select-sm d-inline-block" style="width: auto;" onchange="this.form.submit()">
+                  <option value="new" {% if issue.status == 'new' %}selected{% endif %}>New</option>
+                  <option value="open" {% if issue.status == 'open' %}selected{% endif %}>Open</option>
+                  <option value="stalled" {% if issue.status == 'stalled' %}selected{% endif %}>Stalled</option>
+                  <option value="resolved" {% if issue.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                </select>
+              </form>
+            {% else %}
+              {{ issue.status }}
+            {% endif %}
+          </small>
+        </div>
+        <div class="card-body">
+          <p>{{ issue.description }}</p>
+          <a href="{{ url_for('issues_bp.issue_detail', issue_id=issue.issue_id) }}" class="btn btn-outline-primary btn-sm">View Details</a>
+        </div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p>No resolved issues found.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends '_base.html' %}
+{% block title %}Log In{% endblock %}
+{% set active_page = 'login' %}
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-header text-white text-center">
+        <h3 class="mb-0">Log In</h3>
+      </div>
+      <div class="card-body">
+        <form action="{{ url_for('main_bp.login') }}" method="post">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" name="username" class="form-control{% if username_invalid %} is-invalid{% endif %}" placeholder="Enter your username" value="{{ username or '' }}" maxlength="20" required>
+            {% if username_invalid %}
+            <div class="invalid-feedback">Can't find your account</div>
+            {% endif %}
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password" class="form-control{% if password_invalid %} is-invalid{% endif %}" placeholder="Enter your password" required>
+            {% if password_invalid %}
+            <div class="invalid-feedback">Incorrect username or password</div>
+            {% endif %}
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Log In</button>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer text-center">
+        <small>Don't have an account? <a href="{{ url_for('main_bp.signup') }}">Sign up</a></small>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

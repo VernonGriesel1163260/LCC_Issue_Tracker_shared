@@ -1,0 +1,37 @@
+{% extends '_base.html' %}
+{% block title %}User Profile - Admin View{% endblock %}
+{% set active_page = 'admin_users' %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2>User Profile: {{ user_profile.username }}</h2>
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <!-- Profile Image -->
+          <div class="col-md-4 text-center">
+            {% if user_profile.profile_image and user_profile.profile_image.startswith('images/') %}
+              {% set image_path = user_profile.profile_image %}
+            {% else %}
+              {% set image_path = 'images/' ~ user_profile.profile_image %}
+            {% endif %}
+            <img src="{{ url_for('static', filename=image_path) }}" alt="Profile Image" class="img-fluid rounded-circle" style="max-width: 150px; border: 3px solid #ddd;">
+          </div>
+          <!-- User Details -->
+          <div class="col-md-8">
+            <p><strong>Name:</strong> {{ user_profile.first_name }} {{ user_profile.last_name }}</p>
+            <p><strong>Email:</strong> {{ user_profile.email }}</p>
+            <p><strong>Location:</strong> {{ user_profile.location }}</p>
+            <p><strong>Role:</strong> {{ user_profile.role }}</p>
+            <p><strong>Status:</strong> {{ user_profile.status }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer text-end">
+        <a href="{{ url_for('admin_bp.list_users') }}" class="btn btn-secondary btn-sm">Back to User List</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

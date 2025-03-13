@@ -1,0 +1,62 @@
+{% extends '_base.html' %}
+{% block title %}My Issues{% endblock %}
+{% set active_page = 'issues' %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2>Reported Issues</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <a href="{{ url_for('issues_bp.new_issue') }}" class="btn btn-primary">Report New Issue</a>
+      <a href="{{ url_for('issues_bp.list_resolved_issues') }}" class="btn btn-primary">View Resolved Issues</a>
+    </div>
+    {% if issues %}
+      {% for issue in issues %}
+      <div class="card mb-3">
+        <div class="card-header" style="background-color: #585c33; color: #fff;">
+          <h5>{{ issue.summary }}</h5>
+          <small class="text-white">
+            Reported on {{ issue.created_at }} | Status: 
+            {% if session.get('role') in ['helper', 'admin'] %}
+              <form method="post" action="{{ url_for('issues_bp.update_issue_status', issue_id=issue.issue_id) }}" style="display: inline;">
+                {# hidden input to grab for the referral #}
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <select name="status" class="form-select form-select-sm d-inline-block" style="width: auto;" onchange="this.form.submit()">
+                  <option value="new" {% if issue.status == 'new' %}selected{% endif %}>New</option>
+                  <option value="open" {% if issue.status == 'open' %}selected{% endif %}>Open</option>
+                  <option value="stalled" {% if issue.status == 'stalled' %}selected{% endif %}>Stalled</option>
+                  <option value="resolved" {% if issue.status == 'resolved' %}selected{% endif %}>Resolved</option>
+                </select>
+              </form>
+            {% else %}
+              {{ issue.status }}
+            {% endif %}
+          </small>
+        </div>
+        <div class="card-body">
+          <p>{{ issue.description }}</p>
+          <a href="{{ url_for('issues_bp.issue_detail', issue_id=issue.issue_id) }}" class="btn btn-outline-primary btn-sm">View Details</a>
+        </div>
+        {% if issue.comments %}
+        <ul class="list-group list-group-flush">
+          {% for comment in issue.comments %}
+          <li class="list-group-item">
+            <div class="d-flex align-items-center">
+              <img src="{{ url_for('static', filename='images/' ~ comment.profile_image) }}" alt="User Image" class="rounded-circle me-2" style="width: 40px; height: 40px;">
+              <strong>{{ comment.username }}</strong>
+              <small class="text-muted ms-2">({{ comment.role }})</small>
+            </div>
+            <p class="mb-0">{{ comment.content }}</p>
+            <small class="text-muted">{{ comment.created_at }}</small>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      {% endfor %}
+    {% else %}
+      <p>No issues reported yet.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

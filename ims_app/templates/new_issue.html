@@ -1,0 +1,24 @@
+{% extends '_base.html' %}
+{% block title %}Report New Issue{% endblock %}
+{% set active_page = 'issues' %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h2>Report a New Issue</h2>
+    <form action="{{ url_for('issues_bp.new_issue') }}" method="post">
+      <div class="mb-3">
+        <label for="summary" class="form-label">Issue Summary</label>
+        <input type="text" class="form-control" id="summary" name="summary" placeholder="e.g., Fire pit damaged" required>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Issue Description</label>
+        <textarea class="form-control" id="description" name="description" rows="5" placeholder="Provide detailed description of the issue" required></textarea>
+      </div>
+      <div class="d-grid">
+        <button type="submit" class="btn btn-primary">Report Issue</button>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends '_base.html' %}
+{% block title %}Home{% endblock %}
+{% set active_page = 'home' %}
+
+{% block content %}
+<section class="py-5">
+  <div class="text-center">
+    <h1>Welcome to LCC Issue Tracker</h1>
+    <p class="lead">Report an issue or review your existing reports to help improve the campground.</p>
+  </div>
+  <div class="row justify-content-center mt-4">
+    <!-- Report Issue Card -->
+    <div class="col-md-4 mb-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h4 class="card-title">Report a New Issue</h4>
+          <p class="card-text">Found something wrong? Let us know!</p>
+          <a href="{{ url_for('issues_bp.new_issue') }}" class="btn btn-primary">Report Issue</a>
+        </div>
+      </div>
+    </div>
+    <!-- View My Issues Card -->
+    <div class="col-md-4 mb-3">
+      <div class="card">
+        <div class="card-body text-center">
+          <h4 class="card-title">Reported Issues</h4>
+          <p class="card-text">Review the status and comments on reported issues.</p>
+          <a href="{{ url_for('issues_bp.list_issues') }}" class="btn btn-secondary">View Issues</a>
+        </div>
+      </div>
+    </div>
+    {% block extra_home_cards %}{% endblock %}
+  </div>
+</section>
+{% endblock %}

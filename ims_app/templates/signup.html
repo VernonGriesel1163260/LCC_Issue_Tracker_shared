@@ -1,0 +1,79 @@
+{% extends '_base.html' %}
+{% block title %}Sign Up{% endblock %}
+{% set active_page = 'signup' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-header text-white text-center">
+        <h3 class="mb-0">Sign Up</h3>
+      </div>
+      <div class="card-body">
+        <form action="{{ url_for('main_bp.signup') }}" method="post" enctype="multipart/form-data">
+          <div class="row g-3">
+            <div class="col-auto">
+              <label for="firstname" class="form-label">First Name</label>
+              <input type="text" id="firstname" name="firstname" class="form-control{% if firstname_error %} is-invalid{% endif %}" placeholder="Your first name" maxlength="50" value="{{ firstname or '' }}" required>
+              {% if firstname_error %}<div class="invalid-feedback">{{ firstname_error }}</div>{% endif %}
+            </div>
+            <div class="col-auto">
+              <label for="lastname" class="form-label">Last Name</label>
+              <input type="text" id="lastname" name="lastname" class="form-control{% if lastname_error %} is-invalid{% endif %}" placeholder="Your last name" maxlength="50" value="{{ lastname or '' }}" required>
+              {% if lastname_error %}<div class="invalid-feedback">{{ lastname_error }}</div>{% endif %}
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" id="location" name="location" class="form-control{% if location_error %} is-invalid{% endif %}" placeholder="City, Region or Country" maxlength="50" value="{{ location or '' }}" required>
+            {% if location_error %}<div class="invalid-feedback">{{ location_error }}</div>{% endif %}
+            <div id="locationHelp" class="form-text">Location could be “Lincoln, Canterbury”, “UK”, etc.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="profile_image" class="form-label">Profile Image</label>
+            <input type="file" id="profile_image" name="profile_image" aria-label="profile_image" class="form-control{% if profile_image_error %} is-invalid{% endif %}">
+            {% if profile_image_error %}
+              <div class="invalid-feedback">{{ profile_image_error }}</div>
+            {% endif %}
+            <div id="profile_imageHelp" class="form-text">Allowed types: png, jpeg, webp. Maximum file size: 5MB.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control{% if email_error %} is-invalid{% endif %}" placeholder="you@example.com" maxlength="320" value="{{ email or '' }}" required>
+            {% if email_error %}<div class="invalid-feedback">{{ email_error }}</div>{% endif %}
+          </div>
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" id="username" name="username" class="form-control{% if username_error %} is-invalid{% endif %}" placeholder="Choose a username" maxlength="20" value="{{ username or '' }}" required>
+            {% if username_error %}<div class="invalid-feedback">{{ username_error }}</div>{% endif %}
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password" class="form-control{% if password_error %} is-invalid{% endif %}" placeholder="At least 8 characters" required>
+            <div class="form-text">Your password must be at least 8 characters long.</div>
+            <div class="form-text">Your password must include a special character.</div>
+            {% if password_error %}<div class="invalid-feedback">{{ password_error }}</div>{% endif %}
+          </div>
+          <div class="mb-3">
+            <label for="confirm_password" class="form-label">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" class="form-control{% if confirm_password_error %} is-invalid{% endif %}" placeholder="Confirm Password" required>
+            {% if confirm_password_error %}<div class="invalid-feedback">{{ confirm_password_error }}</div>{% endif %}
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+          </div>
+        </form>
+      </div>
+      <div class="card-footer text-center">
+        {% if signup_successful %}
+          <div class="alert alert-success mb-0">Registration successful! <a class="alert-link" href="{{ url_for('main_bp.login') }}">Log in here</a>.</div>
+        {% else %}
+          <small>Already have an account? <a href="{{ url_for('main_bp.login') }}">Log in</a></small>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

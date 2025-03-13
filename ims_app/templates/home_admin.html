@@ -1,0 +1,16 @@
+{% extends 'home.html' %}
+{% block title %}Admin Home{% endblock %}
+{% set active_page = 'home' %}
+
+{% block extra_home_cards %}
+  <!-- Admin Specific Card: list users -->
+  <div class="col-md-4 mb-3">
+    <div class="card">
+      <div class="card-body text-center">
+        <h4 class="card-title">List Users</h4>
+        <p class="card-text">Manage and view all registered users.</p>
+        <a href="{{ url_for('admin_bp.list_users') }}" class="btn btn-warning">User Management</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
